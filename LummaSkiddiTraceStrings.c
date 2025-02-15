@@ -153,11 +153,48 @@ void *GetFilePath(wchar_t *Src)
 
 
 =========================================================
-=  the fcking calls 
+= calls 
+
+
+
+    lstrcatW(lpString1, GetFilePath(u"\Locedx765al Extensedx765ion Settinedx765gs\"));
+    lstrcatW(lpString1_1, GetFilePath(u"/Extedx765ensioedx765ns/"));
+    int16_t* eax_2 = GetFilePath(u"*edx765");
+
+
+
+    from a function that related to Stealing etc...:
+      - int16_t* eax = GetFilePath(u"Meedx765taMaedx765sk");
+      - int16_t* eax_1 = GetFilePath(u"ejbalbakoplchlghecdaedx765lmeeeajnimhm");  
+      - int16_t* eax_2 = GetFilePath(u"Meedx765taMaedx765sk");
+      - int16_t* eax_3 = GetFilePath(u"nkbihfbeogaeaoehlefedx765nkodbefgpgknn");
+      - int16_t* eax_4 = GetFilePath(u"Troedx765nLiedx765nk");
+      - int16_t* eax_5 = GetFilePath(u"ibnejdfjmmkpcnlpebklmnkoeoihofec");
+      - PWSTR var_14_3 = GetFilePath(u"Ronedx765in Walledx765et");
+      - int16_t* eax_7 = GetFilePath(u"fnjhmkhhmkbedx765jkkabndcnnogagogbneec");    
+      - PWSTR var_14_4 = GetFilePath(u"Binedx765ance Chaedx765in Waledx765let");     
+      - int16_t* eax_9 = GetFilePath(u"fhbohimaelbohpjbbldcngcnapnedx765dodjp");     
+      - PWSTR var_14_5 = GetFilePath(u"Coinbedx765ase");
+      - int16_t* eax_14 = GetFilePath(u"hnfanknocfeedx765ofbddgcijnmedx765hnfnkdnaad");
+      - int16_t* eax_50 = GetFilePath(u"Eedx765OS Authentiedx765cator");
+      - int16_t* eax_51 = GetFilePath(u"GAuedx765th Autheedx765nticator");
+      - int16_t* eax_52 = GetFilePath(u"Tredx765ezor Passwedx765ord Manager");
+      - int16_t* eax_53 = GetFilePath(u"Hisedx765tory");
+      - int16_t* eax_54 = GetFilePath(u"Loedx765gin Daedx765ta");
+      - int16_t* eax_55 = GetFilePath(u"Logedx765in Daedx765ta Foedx765r Accedx765ount");
+      - int16_t* eax_56 = GetFilePath(u"Histedx765ory");
+      - int16_t* eax_57 = GetFilePath(u"Wedx765eb Daedx765ta");
+      - int16_t* eax_58 = GetFilePath(u"Netwedx765ork\Cookedx765ies");
 
 
 
 
-    lstrcatW(lpString1, GetFilePath(u"\Locedx765al Extensedx765ion Set…"));
+
+    lstrcatW(lpString1, GetFilePath(u"\Locedx765al Staedx765te"));
+
+
+
+    from CollectSystemInfo func:
+          - int16_t* eax_29 = GetFilePath(u"Systeedx765m.txt");
 
 */
