@@ -4,5 +4,5 @@ CollectSystemInfo(DWORD *SharedBuff);
 char* __fastcall 
 TrasStrings(char* src);
 
-void 
+PWSTR 
 *GetFilePath(wchar_t *Src);
