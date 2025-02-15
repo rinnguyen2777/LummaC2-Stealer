@@ -52,8 +52,7 @@ char* __fastcall TrasStrings(char* src) {
   return out;
 }
 
-
-void *GetFilePath(wchar_t *Src)
+PWSTR *GetFilePath(wchar_t *Src)
 {
   const wchar_t *strStart;
   int removeCount = 0;
@@ -62,8 +61,8 @@ void *GetFilePath(wchar_t *Src)
   int strLength;
   wchar_t *matchPos;
   void *allocatedMem;
-  void *result;
-  _BYTE *memPos;
+  PWSTR *result;
+  BYTE *memPos;
   wchar_t *nextMatchPos;
   int strPartLength;
   wchar_t currentChar;
