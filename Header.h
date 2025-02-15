@@ -61,3 +61,5 @@ ProccessingOrMapsTheWideCharacter(wchar16* lpWideCharStr){
 }
 
 }
+
+int __cdecl WinnetDllFuncRelated(const char *postData, int dataSize, int extraParam);
