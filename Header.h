@@ -1,2 +1,1 @@
-#include "CollectSystemInfo.c"
-#include "LummaSkiddiTraceStrings.c"
+CHAR *__thiscall CollectSystemInfo(DWORD *SharedBuff);
