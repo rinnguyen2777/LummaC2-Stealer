@@ -1,3 +1,6 @@
+#ifndef HEADER_H
+#define HEADER_H
+
 CHAR *__thiscall 
 CollectSystemInfo(DWORD *SharedBuff);
 
@@ -11,7 +14,10 @@ int32_t __fastcall
 ProcessAndSendData(int32_t* inputData);
 
 size_t __cdecl 
-ProcessMultipartRequest(void *dataToSend, size_t dataSize, size_t *bufferSize, PSTR IPaddrs);
+ProcessMultipartRequest(void *dataToSend, 
+                        size_t dataSize, 
+                        size_t *bufferSize, 
+                        PSTR IPaddrs);
 
 PSTR __fastcall 
 ProccessingOrMapsTheWideCharacter(wchar16* lpWideCharStr)
@@ -127,4 +133,18 @@ verifyFileStatus(WCHAR *TheRealOne)
     return 1;
 }
 
-int __cdecl WinnetDllFuncRelated(const char *postData, int dataSize, int extraParam);
+int __cdecl 
+WinnetDllFuncRelated(const char *postData, 
+                     int dataSize, 
+                     int extraParam);
+
+void 
+DecryptKeyData(const WCHAR *TheRealOne_, 
+                int *rawFileData, 
+                int *fileDataSize);
+
+int __fastcall 
+ExtractFileInfoViaNTDLL(void *TheRealOne_, 
+                        DWORD *encryptedKey, 
+                        size_t *resultLength);
+#endif
