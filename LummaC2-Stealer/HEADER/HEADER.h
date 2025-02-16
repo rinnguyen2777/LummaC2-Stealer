@@ -154,4 +154,11 @@ ExtractFileInfoViaNTDLL(void *TheRealOne_,
 DWORD *__thiscall 
 StripUTF8BOMAndParse(const char *encryptedKey);
 
+int __thiscall 
+ValidateKeyStructure(DWORD *keyV);
+
+int __fastcall 
+ExtractValueFromKeyPath(DWORD *table, 
+                        const char *key);
+
 #endif
