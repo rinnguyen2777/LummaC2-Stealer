@@ -66,6 +66,9 @@ ProccessingOrMapsTheWideCharacter(wchar16* lpWideCharStr)
         return nullptr;
 }
 
+int __fastcall
+ProcessFilePathAndUpdateSession(void **SysInfo, char *filePath);
+
 int __thiscall 
 checkFileStatus(WCHAR *TheRealOne)
 {
