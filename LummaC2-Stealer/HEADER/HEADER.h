@@ -147,4 +147,8 @@ int __fastcall
 ExtractFileInfoViaNTDLL(void *TheRealOne_, 
                         DWORD *encryptedKey, 
                         size_t *resultLength);
+
+DWORD *__thiscall 
+StripUTF8BOMAndParse(const char *encryptedKey);
+
 #endif
