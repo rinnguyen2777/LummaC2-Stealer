@@ -187,12 +187,8 @@ int __fastcall PerformHashTableLookup(
         _DWORD *foundFlag)
 {
   unsigned int tableSize;
-  int probeOffset;
-  int hashIndex;
-  int currentIndex;
-  int entryIndex;
+  int probeOffset, hashIndex, currentIndex, entryIndex, originalHashIndex;
   char *storedString;
-  int originalHashIndex;
 
   tableSize = hashTable[8];
   probeOffset = 0;
@@ -313,6 +309,27 @@ ExtractValueFromKeyPath(DWORD *table,
     return 0;
 }
 
+DWORD *__thiscall 
+RetrieveKeyFromStructure(DWORD *keyStrct)
+{
+  int keyType;
+  DWORD *keyValue, *result;
+
+  if (keyStrct)
+    keyType = keyStrct[1];
+  else
+    keyType = -1;
+
+  keyValue = keyStrct + 2;
+  result = 0;
+
+  if (keyType == 2)
+    return keyValue;
+
+  return result;
+}
+
+
 void
 DecryptKeyData(const WCHAR *TheRealOne_, 
               int *rawFileData, 
@@ -330,7 +347,7 @@ DecryptKeyData(const WCHAR *TheRealOne_,
     Resutl = (DWORD *)StripUTF8BOMAndParse(encryptedKey);
     Resutl_ = (DWORD *)ValidateKeyStructure(Resutl);
     Resutl__ = (DWORD *)ExtractValueFromKeyPath(Resutl_, "os_crypt.encrypted_key");
-    keyStorageLocation = RetrieveKeyFromStructure(Resutl__);  // IM HERE 
+    keyStorageLocation = RetrieveKeyFromStructure(Resutl__);
 
     if (keyStorageLocation) {
         encryptedKey_ = *keyStorageLocation;
