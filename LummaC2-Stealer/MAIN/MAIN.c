@@ -235,8 +235,8 @@ ExtractUserData(int brwsrPathOfshit,
 
     if (fileDataSize) {
         ProcessFilePathAndUpdateSession(*SysInfo, processedFile);  // IM HERE
-        sub_407160((int)*SysInfo, rawFileData, fileDataSize);
-        sub_406ED8((char *)*SysInfo);
+        blabla((int)*SysInfo, rawFileData, fileDataSize);
+        blabla((char *)*SysInfo);
     }
 
     rawFileData = NULL;
