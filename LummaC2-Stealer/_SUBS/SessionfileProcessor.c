@@ -87,6 +87,30 @@ MATCH_FOUND:
 }
 
 int __fastcall 
+ConvertTimeToCustomFormat(WORD *TimeofDay, 
+                          WORD *date, 
+                          __time64_t Time)
+{
+  int result, tm_mon;
+  tm Tm;
+
+  if ( _localtime64_s(&Tm, &Time) )
+  {
+    result = 0;
+    *date = 0;
+    *TimeofDay = 0;
+  }
+  else
+  {
+    tm_mon = Tm.tm_mon;
+    *TimeofDay = (Tm.tm_sec >> 1) + 32 * (LOWORD(Tm.tm_min) + (LOWORD(Tm.tm_hour) << 6));
+    result = Tm.tm_mday + 32 * (16 * Tm.tm_year + tm_mon + 769);
+    *date = result;
+  }
+  return result;
+}
+
+int __fastcall 
 ProcessFilePathAndUpdateSession(void **SysInfo, 
                                 char *_TrgtPath) 
 {
