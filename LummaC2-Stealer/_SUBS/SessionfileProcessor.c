@@ -205,10 +205,11 @@ ProcessFilePathAndUpdateSession(void **SysInfo,
             } else {
                 sessionData = NULL;
             }
-
-            if (InitializeFileHeader(SysInfo + 32, TrgtPath_length__, sessionData, timeBuffer)) {
-                SysInfo[23] = SysInfo[23];
-                *((_QWORD *)SysInfo + 15) += validationStatus + 30;
+            char v57[28];
+            __sessionData = PrepareDataBlock((int)v57, 0, 0, sessionData);
+            if (InitializeFileHeader(SysInfo + 32, TrgtPath_length__, __sessionData, *((WORD *)SysInfo + 84), timeBuffer, dataOffset)) {
+               void* __SysInfo23 = SysInfo[23];
+                *((QWORD *)SysInfo + 15) += validationStatus + 30;
                 
                 if (WriteSessionData(SysInfo, TrgtPath_length__)) {
                     if (!sessionFlag)
@@ -217,7 +218,7 @@ ProcessFilePathAndUpdateSession(void **SysInfo,
                     SysInfo[48] = 0;
                     SysInfo[49] = 0;
                     SysInfo[44] = SysInfo;
-                    *((_QWORD *)SysInfo + 23) = sessionData;
+                    *((QWORD *)SysInfo + 23) = __SessionData;
                     
                     if (!InitializeSysInfo((int)(SysInfo + 44), GenerateFlagsFromValue(sessionFlag)))
                         return 0;
