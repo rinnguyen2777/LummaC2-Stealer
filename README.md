@@ -1,5 +1,8 @@
 # LummaC2 Stealer
 
+        ![image](https://github.com/user-attachments/assets/0a3e9650-2547-44f6-84b4-d18cca0b4857)
+
+
 ## 1. Introduction
 
 LummaC2 is a commodity stealer malware that gained notoriety in underground cybercrime forums. It's primarily advertised as a "premium" infostealer, targeting browsers, cryptocurrency wallets, and authentication data. Despite the marketing hype, a deep dive into the provided code snippets reveals a series of significant weaknesses, hardcoded configurations, and questionable coding practices – all red flags pointing to a rushed, low-quality malware product. The "advanced" label is highly misleading; this is a project likely built by skiddies with a shaky grasp of secure coding principles.
