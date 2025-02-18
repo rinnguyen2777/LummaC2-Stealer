@@ -24,7 +24,10 @@ While we can't definitively confirm the developers' identities based on the code
 ## 3. Technical Analysis of LummaC2 - The Real Story
 
 The provided C code snippets expose the inner workings, or lack thereof, of this supposedly "premium" stealer. Let's strip away the marketing and focus on the reality:
+
 ![image](https://github.com/user-attachments/assets/ac257609-1686-480f-ace0-a1db9058154e)
+
+
 
 
 ### 3.1. Code Structure and Anti-Analysis Techniques (Reality Check)
