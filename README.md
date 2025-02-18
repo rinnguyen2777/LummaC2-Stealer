@@ -1,6 +1,7 @@
 # LummaC2 Stealer
 
-        ![image](https://github.com/user-attachments/assets/0a3e9650-2547-44f6-84b4-d18cca0b4857)
+        
+![image](https://github.com/user-attachments/assets/eda793a2-e3d0-46ca-ac80-205fcb613759)
 
 
 ## 1. Introduction
