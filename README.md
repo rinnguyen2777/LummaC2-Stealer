@@ -9,6 +9,7 @@ LummaC2 is a commodity stealer malware that gained notoriety in underground cybe
 While we can't definitively confirm the developers' identities based on the code, the advertised origins point to typical locations for this kind of malware:
 
 *   **Distribution:** Sold on underground forums (XSS, Exploit.in, RAMP) and promoted via Telegram hacking groups and darknet marketplaces.
+
     ![image](https://github.com/user-attachments/assets/54a158f1-501b-4c17-984c-5a43a4122947)
     
     ![image](https://github.com/user-attachments/assets/b5dc58df-4519-449a-b133-885ed5eea3db)
