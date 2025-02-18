@@ -10,8 +10,11 @@ While we can't definitively confirm the developers' identities based on the code
 
 *   **Distribution:** Sold on underground forums (XSS, Exploit.in, RAMP) and promoted via Telegram hacking groups and darknet marketplaces.
     ![image](https://github.com/user-attachments/assets/54a158f1-501b-4c17-984c-5a43a4122947)
+    
     ![image](https://github.com/user-attachments/assets/b5dc58df-4519-449a-b133-885ed5eea3db)
+    
     ![image](https://github.com/user-attachments/assets/fed5aaf5-508d-404f-9154-d155d7cf30a9)
+    
     ![image](https://github.com/user-attachments/assets/5f9f3160-a5da-4889-90ba-722038f87fa5)
 
 
